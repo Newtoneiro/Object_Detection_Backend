@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
+import base64
 
-HOST = "10.1.9.88"
+HOST = "10.1.254.188"
 PORT = 8888
 app = Flask(__name__)
 
@@ -12,13 +13,16 @@ def serve_home():
     })
 
 
-@app.route("/sampleResponse", methods=["POST"])
+@app.route("/capturePhoto", methods=["POST"])
 def serve_sampleResponse():
     data = request.json
-    message = data['message']
-    print("Message received: " + message)
+    file = data['file']
+    imgdata = base64.b64decode(file + "==")
+    filename = 'some_image.jpg'
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
     return jsonify({
-        'response': f"Successfully received {message}."
+        'response': "Successfully received photo."
     })
 
 
