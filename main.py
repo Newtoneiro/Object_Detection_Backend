@@ -25,17 +25,13 @@ def serve_sampleResponse():
     with open(filename, 'wb') as f:
         f.write(imgdata)
     results = model.predict("some_image.jpg")
-    boxes = results[0].boxes.xywhn.numpy()
-    print(boxes)
-    boxes_json = [{"x": str(x), "y": str(y), "w": str(w), "h": str(h)}
-                  for (x, y, w, h) in boxes]
+    results_json = results[0].tojson(normalize=True)
+
     predicted_image = results[0].plot()
     cv2.imwrite('./some_prediction.jpg', predicted_image)
-    return jsonify({
-        'result_boxes': boxes_json
-    })
+    return results_json
 
 
 if __name__ == "__main__":
     print(f"Server will be running on {HOST}:{PORT}")
-    app.run(debug=True, host=HOST, port=PORT)
+    app.run(host=HOST, port=PORT)
