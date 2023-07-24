@@ -1,23 +1,18 @@
-from flask import Flask, request, jsonify
+from app import app
+from flask import request
 import base64
-from ultralytics import YOLO
 import cv2
+from ultralytics import YOLO
 
-HOST = "10.1.7.78"
-PORT = 8888
-app = Flask(__name__)
+
 model = YOLO("yolov8n.pt")
 
 
-@app.route("/", methods=["GET"])
-def serve_home():
-    return jsonify({
-        'response': "Connected to backend."
-    })
+MAIN_PATH = "/objectDetection/"
 
 
-@app.route("/capturePhoto", methods=["POST"])
-def serve_sampleResponse():
+@app.route(f"{MAIN_PATH}capturePhoto", methods=["POST"])
+def serve_capturePhoto():
     data = request.json
     file = data['file']
     imgdata = base64.b64decode(file)
@@ -30,8 +25,3 @@ def serve_sampleResponse():
     predicted_image = results[0].plot()
     cv2.imwrite('./some_prediction.jpg', predicted_image)
     return results_json
-
-
-if __name__ == "__main__":
-    print(f"Server will be running on {HOST}:{PORT}")
-    app.run(host=HOST, port=PORT)
