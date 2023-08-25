@@ -13,8 +13,13 @@ MAIN_PATH = "/objectDetection/"
 
 @app.route(f"{MAIN_PATH}capturePhoto", methods=["POST"])
 def serve_capturePhoto():
-    data = request.json
-    file = data['file']
+    try:
+        req_data = request.get_json()
+        file = req_data['file']
+        doSave = req_data['doSave']
+    except KeyError:
+        return "Bad Request.", 400
+
     imgdata = base64.b64decode(file)
     filename = 'some_image.jpg'
     with open(filename, 'wb') as f:
@@ -22,6 +27,8 @@ def serve_capturePhoto():
     results = model.predict("some_image.jpg")
     results_json = results[0].tojson(normalize=True)
 
-    predicted_image = results[0].plot()
-    cv2.imwrite('./some_prediction.jpg', predicted_image)
-    return results_json
+    if (doSave):
+        predicted_image = results[0].plot()
+        cv2.imwrite('./some_prediction.jpg', predicted_image)
+
+    return results_json, 200
