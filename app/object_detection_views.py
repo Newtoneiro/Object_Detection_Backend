@@ -1,3 +1,4 @@
+from app.utils import token_required
 from app import app
 from flask import request
 import base64
@@ -12,6 +13,7 @@ MAIN_PATH = "/objectDetection/"
 
 
 @app.route(f"{MAIN_PATH}capturePhoto", methods=["POST"])
+@token_required
 def serve_capturePhoto():
     try:
         req_data = request.get_json()
