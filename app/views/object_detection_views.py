@@ -1,5 +1,7 @@
-from app.utils import token_required
 from app import app
+from app import error_codes
+from app.utils import token_required
+
 from flask import request
 import base64
 import cv2
@@ -20,7 +22,7 @@ def serve_capturePhoto():
         file = req_data['file']
         doSave = req_data['doSave']
     except KeyError:
-        return "Bad Request.", 400
+        return error_codes.BAD_REQUEST, 400
 
     imgdata = base64.b64decode(file)
     filename = 'some_image.jpg'
