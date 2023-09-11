@@ -3,10 +3,12 @@ from app import error_codes
 from app.utils import token_required
 
 from flask import request
+from flask_sock import Sock
 import base64
 import cv2
 from ultralytics import YOLO
 
+liveDetectionSock = Sock(app)
 
 model = YOLO("yolov8n.pt")
 
@@ -36,3 +38,12 @@ def serve_capturePhoto():
         cv2.imwrite('./some_prediction.jpg', predicted_image)
 
     return results_json, 200
+
+
+@liveDetectionSock.route(f"{MAIN_PATH}liveDetection")
+def liveDetection(ws):
+    print("connected")
+    while True:
+        data = ws.receive()
+        print(data)
+        ws.send("received")
