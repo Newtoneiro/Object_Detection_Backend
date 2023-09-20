@@ -7,6 +7,8 @@ from flask_sock import Sock
 import base64
 import cv2
 from ultralytics import YOLO
+import torch
+import json
 
 liveDetectionSock = Sock(app)
 
@@ -45,5 +47,12 @@ def liveDetection(ws):
     print("connected")
     while True:
         data = ws.receive()
-        print(data)
+        data = data.decode().replace("'", '"')
+        dataJson = json.loads(data)
+        tensor = torch.reshape(torch.tensor(data=[dataJson["values"]],
+                                            dtype=torch.float32), (3, 2, 1))
+
+        results = model.predict(tensor)
+        results_json = results[0].tojson(normalize=True)
+        print(results_json)
         ws.send("received")
