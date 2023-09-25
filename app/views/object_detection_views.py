@@ -9,7 +9,6 @@ import cv2
 from ultralytics import YOLO
 import torch
 import json
-import matplotlib.pyplot as plt
 
 liveDetectionSock = Sock(app)
 
@@ -51,8 +50,7 @@ def liveDetection(ws):
         data = data.decode().replace("'", '"')
         dataJson = json.loads(data)
         tensor = torch.tensor(data=[dataJson["values"]])
-        torch.save(tensor, './tensor')
-    
+        tensor = tensor.permute((0, 3, 1, 2))
         results = model.predict(tensor)
         results_json = results[0].tojson(normalize=True)
         ws.send(results_json)
