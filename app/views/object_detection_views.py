@@ -38,12 +38,3 @@ def serve_capturePhoto():
         cv2.imwrite('./some_prediction.jpg', predicted_image)
 
     return results_json, 200
-
-
-@liveDetectionSock.route(f"{MAIN_PATH}liveDetection")
-def liveDetection(ws):
-    print("connected")
-    while True:
-        data = ws.receive()
-        print(data)
-        ws.send("received")
