@@ -7,8 +7,6 @@ from flask_sock import Sock
 import base64
 import cv2
 from ultralytics import YOLO
-import torch
-import json
 
 liveDetectionSock = Sock(app)
 
@@ -40,17 +38,3 @@ def serve_capturePhoto():
         cv2.imwrite('./some_prediction.jpg', predicted_image)
 
     return results_json, 200
-
-
-@liveDetectionSock.route(f"{MAIN_PATH}liveDetection")
-def liveDetection(ws):
-    print("connected")
-    while True:
-        data = ws.receive()
-        data = data.decode().replace("'", '"')
-        dataJson = json.loads(data)
-        tensor = torch.tensor(data=[dataJson["values"]])
-        tensor = tensor.permute((0, 3, 1, 2))
-        results = model.predict(tensor)
-        results_json = results[0].tojson(normalize=True)
-        ws.send(results_json)
