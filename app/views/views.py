@@ -15,4 +15,4 @@ def serve_home():
 @app.route(f"{MAIN_PATH}/getModelJSON/<path:filename>", methods=['GET'])
 def serve_model_json(filename):
     return send_from_directory(app.static_folder,
-                               f'model/{filename}')
+                               f'model_save/{filename}')
