@@ -3,4 +3,4 @@ from ultralytics import YOLO
 
 
 model = YOLO("yolov8n.pt")
-model.export(format='tfjs')
+model.export(format='tflite')
