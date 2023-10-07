@@ -3,7 +3,7 @@ import firebase_admin
 
 
 # HOST = "10.1.7.78"
-HOST = "192.168.122.49"
+HOST = "192.168.90.75"
 PORT = 8888
 
 if __name__ == "__main__":
