@@ -1,13 +1,24 @@
+"""
+This is the main file to run in order to start the server.
+"""
+
 from app import app
 import firebase_admin
 
+from app.config import HOST, PORT, SDK_PATH
 
-# HOST = "10.1.7.78"
-HOST = "192.168.90.75"
-PORT = 8888
+
+def initialize_firebase() -> None:
+    """Initialize firebase with the SDK file given in config."""
+    cred = firebase_admin.credentials.Certificate(SDK_PATH)
+    firebase_admin.initialize_app(cred)
+
 
 if __name__ == "__main__":
-    cred = firebase_admin.credentials.Certificate('firebase-sdk.json')
-    firebase_admin.initialize_app(cred)
+    """
+    Main script. Initializes the firebase app and runs flask server on
+    [HOST]:[PORT] defined in config.
+    """
+    initialize_firebase()
     print(f"Server will be running on {HOST}:{PORT}")
     app.run(host=HOST, port=PORT)

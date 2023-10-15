@@ -1,3 +1,7 @@
+"""
+App module __init__ file.
+"""
+
 # flake8: noqa
 from flask import Flask
 

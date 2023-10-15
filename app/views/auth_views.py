@@ -1,3 +1,5 @@
+"""This file contains the endpoint related to user authentication."""
+
 from app import app
 from app import error_codes
 
@@ -9,7 +11,18 @@ MAIN_PATH = "/auth/"
 
 
 @app.route(f"{MAIN_PATH}verifyToken", methods=["POST"])
-def serve_verifyToken():
+def serve_verifyToken() -> tuple:
+    """
+    Endpoint responsible for receiving the token and
+    verifying it via Firebase.
+
+    Returns:
+        (tuple): tuple containing:
+
+            Error Signature(str): If token is invalid, else the
+                output of wrapped function.
+            Status Code(int): Server status code.
+    """
     try:
         req_data = request.get_json()
         token = req_data['token']

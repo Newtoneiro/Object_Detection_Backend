@@ -1,3 +1,8 @@
+"""
+This file contains all of the error signatures that can be raised
+by functions defined in other files.
+"""
+
 # Request related
 BAD_REQUEST = "ERR_BAD_REQUEST"
 
