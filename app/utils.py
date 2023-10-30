@@ -25,7 +25,7 @@ def token_required(func: Callable) -> Callable:
                   token is valid and current.
     """
     @wraps(func)
-    def decorator(*args: tuple, **kwargs: dict[str, any]) \
+    def wrapper(*args: tuple, **kwargs: dict[str, any]) \
             -> tuple or None:
         """
         This function checks if provided request's headers
@@ -57,4 +57,4 @@ def token_required(func: Callable) -> Callable:
 
         return func(*args, **kwargs)
 
-    return decorator
+    return wrapper
