@@ -4,6 +4,9 @@ This file contains the endpoint related to object detection.
 ROUTE = "/objectDetection/"
 """
 
+import json
+
+import torch
 from app import app
 from app import error_codes
 from app.utils import token_required
@@ -65,9 +68,15 @@ def serve_captureTensor() -> tuple:
             Status Code(int): Server status code.
     """
     try:
-        req_data = request.get_json()
-        tensor = req_data['tensor']
+        print(request)
+        data = request.get_json()
     except KeyError:
         return error_codes.BAD_REQUEST, 400
+
+    data = data.decode().replace("'", '"')
+    dataJson = json.loads(data)
+    tensor = torch.reshape(torch.tensor(data=[dataJson["values"]],
+                                        dtype=torch.float32), (3, 2, 1))
+    tensor.print()
 
     return "", 200
