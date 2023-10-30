@@ -20,3 +20,4 @@ SDK_PATH = './firebase-sdk.json'
 IMG_FOLDER = "./saved_images"
 IMG_PATH = os.path.join(IMG_FOLDER, "some_image.jpg")
 PRED_PATH = os.path.join(IMG_FOLDER, "some_prediction.jpg")
+TENSOR_PATH = os.path.join(IMG_FOLDER, "some_tensor.pt")

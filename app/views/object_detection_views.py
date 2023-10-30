@@ -4,8 +4,6 @@ This file contains the endpoint related to object detection.
 ROUTE = "/objectDetection/"
 """
 
-import json
-
 import torch
 from app import app
 from app import error_codes
@@ -14,7 +12,7 @@ from app.utils import token_required
 from flask import request
 import base64
 import cv2
-from app.config import IMG_PATH, PRED_PATH
+from app.config import IMG_PATH, PRED_PATH, TENSOR_PATH
 from app.model import model
 
 
@@ -68,15 +66,17 @@ def serve_captureTensor() -> tuple:
             Status Code(int): Server status code.
     """
     try:
-        print(request)
-        data = request.get_json()
+        req_data = request.get_json()
+        shape = req_data['shape']
+        values = req_data['values']
     except KeyError:
         return error_codes.BAD_REQUEST, 400
 
-    data = data.decode().replace("'", '"')
-    dataJson = json.loads(data)
-    tensor = torch.reshape(torch.tensor(data=[dataJson["values"]],
-                                        dtype=torch.float32), (3, 2, 1))
-    tensor.print()
+    tensor = torch.tensor(data=[values],
+                          dtype=torch.int16).squeeze()  # remove additional dim
+    tensor = torch.flip(tensor, [1])  # flip the image
+    assert tensor.shape == torch.Size(shape)
+
+    torch.save(tensor, TENSOR_PATH)
 
     return "", 200
