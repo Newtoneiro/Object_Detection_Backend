@@ -15,7 +15,9 @@ def token_required(func: Callable) -> Callable:
     """
     This is a wrapper function ensuring that the request
     passed to wrapped endpoint contains the 'X-Access-Tokens'
-    header acquired by authentication endpoint.
+    header acquired by authentication endpoint. Passes a
+    dictionary to wrapped function containing info about
+    the logged user.
 
     Args:
         func (Callable): Function (endpoint) to wrap.
@@ -47,7 +49,7 @@ def token_required(func: Callable) -> Callable:
             return error_codes.BAD_REQUEST, 400
 
         try:
-            auth.verify_id_token(token)
+            user = auth.verify_id_token(token)
         except auth.ExpiredIdTokenError:
             return error_codes.JWT_EXPIRED, 401
         except auth.InvalidIdTokenError:
@@ -55,6 +57,6 @@ def token_required(func: Callable) -> Callable:
         except Exception:
             return error_codes.JWT_OTHER, 401
 
-        return func(*args, **kwargs)
+        return func(user, *args, **kwargs)
 
     return wrapper
