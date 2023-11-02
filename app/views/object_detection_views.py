@@ -84,7 +84,6 @@ def serve_capturePhoto(user: dict) -> tuple:
             new_tensor_ref = db.collection(TENSOR_COLLECTION).document()
             new_tensor_ref.set(tensor_object.__dict__)
         except Exception as e:
-            print(e)
             return error_codes.FIRESTORE_ERROR, 500
 
     return results_json, 200
