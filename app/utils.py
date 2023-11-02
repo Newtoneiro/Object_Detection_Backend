@@ -3,12 +3,14 @@ Utils submodule contains common helper functions
 that can be utilized by other functions.
 """
 
+from app import error_codes
+
 from functools import wraps
 from typing import Callable
 from flask import request
 from firebase_admin import auth
 
-from app import error_codes
+# AUTH STUFF
 
 
 def token_required(func: Callable) -> Callable:
