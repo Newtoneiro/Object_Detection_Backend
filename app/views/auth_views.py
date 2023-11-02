@@ -1,4 +1,8 @@
-"""This file contains the endpoint related to user authentication."""
+"""
+This file contains the endpoint related to user authentication.
+
+ROUTE = "/auth/"
+"""
 
 from app import app
 from app import error_codes
