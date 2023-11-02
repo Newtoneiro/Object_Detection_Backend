@@ -22,6 +22,10 @@ TENSOR_COLLECTION = "storedTensors"
 # CAMERA MODE
 SAVED_IMAGE_RESCALE = (152, 200)  # (w, h)
 
+# LIVE MODE
+# == if all pixel values are lower than this, the tensor represents black image ==
+TENSOR_DISCARD_TRESHOLD = 35
+
 # SAVED TENSORS EVENT SOURCES
 EVENT_SOURCE_CAMERA_MODE = "CAMERA_MODE"
 EVENT_SOURCE_LIVE_MODE = "LIVE_MODE"

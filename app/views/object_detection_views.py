@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from app import app
 from app import error_codes
 from app.utils import token_required
-from app.config import SAVED_IMAGE_RESCALE, EVENT_SOURCE_LIVE_MODE, EVENT_SOURCE_CAMERA_MODE, TENSOR_COLLECTION
+from app.config import SAVED_IMAGE_RESCALE, EVENT_SOURCE_LIVE_MODE, EVENT_SOURCE_CAMERA_MODE, TENSOR_COLLECTION, TENSOR_DISCARD_TRESHOLD
 from app.model import model
 
 from flask import request
@@ -103,7 +103,8 @@ def serve_captureTensor(user: dict) -> tuple:
     Returns:
         tuple(tuple): tuple containing:
 
-            Error signature(str): If request is invalid, else None.
+            Error signature(str): If request is invalid / server throws an error,
+                                  else None.
             Status Code(int): Server status code.
     """
 
@@ -118,8 +119,9 @@ def serve_captureTensor(user: dict) -> tuple:
                           dtype=torch.int16).squeeze()  # remove additional dim
     tensor = torch.flip(tensor, [1])  # flip the image
     assert tensor.shape == torch.Size(shape)
-    plt.imshow(tensor)
-    plt.show()
+
+    if torch.all(tensor < TENSOR_DISCARD_TRESHOLD):  # The tensor is an useless black image
+        return error_codes.TENSOR_INVALID, 400
 
     try:
         db = firestore.client()

@@ -13,3 +13,6 @@ JWT_OTHER = "ERR_JWT_OTHER"
 
 # Firebase related
 FIRESTORE_ERROR = "ERR_FIRESTORE"
+
+# Live mode related
+TENSOR_INVALID = "ERR_TENSOR_INVALID"
