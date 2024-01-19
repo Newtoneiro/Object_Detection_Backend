@@ -1,6 +1,6 @@
-# Flask Application Setup and Configuration
+# Object Detection Backend Setup and Configuration
 
-This README provides step-by-step instructions on setting up and running a Python Flask application. The application has specific requirements, environment variables, and relies on a `firebase-sdk.json` file for proper functioning.
+This README provides step-by-step instructions on setting up and running a Object Detection Backend application. The application has specific requirements, environment variables, and relies on a `firebase-sdk.json` file for proper functioning.
 
 ## Table of Contents
 
@@ -60,8 +60,10 @@ Before setting up the Flask application, ensure the following prerequisites are 
 3. Install dependencies:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements/requirements.txt
    ```
+
+   Additionally you can install the ultralytics specific ones (I needed them for more advanced `ultralytics` stuff)
 
 ## Configuration
 
