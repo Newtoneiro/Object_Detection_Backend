@@ -1,13 +1,14 @@
 """
 This file defines all of the global config variables.
 """
-
-
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # SERVER
-HOST = "192.168.119.129"
-PORT = 8888
+HOST = os.environ['SERVER_API_ADDRESS']
+PORT = int(os.environ['SERVER_API_PORT'])
 
 # STATIC FILES
 STATIC_FOLDER = './static'
@@ -23,7 +24,9 @@ TENSOR_COLLECTION = "storedTensors"
 SAVED_IMAGE_RESCALE = (152, 200)  # (w, h)
 
 # LIVE MODE
-# == if all pixel values are lower than this, the tensor represents black image ==
+
+# == if all pixel values are lower than this ==
+# == the tensor represents black image       ==
 TENSOR_DISCARD_TRESHOLD = 35
 
 # SAVED TENSORS EVENT SOURCES
